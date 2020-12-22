@@ -1,0 +1,32 @@
+{
+  // "productId":"",
+  "productName": "產品名1",
+  "productIntro": "產品簡介1",
+  // "categoryId":"",
+  "productCoverImg": "img1",
+  "productBanner": "banner1",
+  "originalPrice": 150.0,
+  "sellingPrice": 100.0,
+  "stockNum": 10,
+  "tag": "tag1",
+  "sellStatus": 1,
+  // "createUser":,
+  // "updateUser":,
+  "productDetailContent": "detail"
+  // "isDeleted":false
+}
+
+{
+  "productId": "f3a3bceb-1c6e-419c-a608-ceff448bae89",
+  "productName": "產品名3",
+  "productIntro": "產品簡介22233",
+  "productCoverImg": "img2",
+  "productBanner": "banner2",
+  "categoryName": "人文",
+  "originalPrice": 150.0,
+  "sellingPrice": 100.0,
+  "stockNum": 10,
+  "tag": "tag1",
+  "sellStatus": 1,
+  "productDetailContent": "detail"
+}

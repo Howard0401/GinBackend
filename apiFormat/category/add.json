@@ -1,0 +1,10 @@
+{
+  "c1Name": "書籍",
+  "c1Desc": "",
+  "c1Order": 10,
+  "c2Name": "人文",
+  "c2Order": 15,
+  "c3Name": "宗教",
+  "c3Order": 100,
+  "isDeleted": false
+}

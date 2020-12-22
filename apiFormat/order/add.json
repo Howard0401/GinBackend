@@ -1,0 +1,23 @@
+{
+  // "orderId":"0a839b7a-4f11-4736-9424-dcdbcedbf0de",
+  "userid": "fd121f7f-75b3-4472-929d-3b8a4dbd271c",
+  "mobile": "0912345678",
+  "nickName": "test1123",
+  "orderDetail": {
+    "itemId": [
+      "f3a3bceb-1c6e-419c-a608-ceff448bae89",
+      "7d2cdff7-dc0c-42f4-ae1f-3e793491e101",
+      "2be4e222-1d27-4c90-8a3c-ac86826e04e5"
+    ],
+    "itemCount": [
+      1,
+      2,
+      2
+    ]
+  },
+  "payStatus": 1,
+  "payType": 1,
+  "orderStatus": 1,
+  "extraInfo": "extra",
+  "userAddress": "UserAddress.....1"
+}

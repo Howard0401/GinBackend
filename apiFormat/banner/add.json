@@ -1,0 +1,8 @@
+{
+  "bannerId": "inputBanner5",
+  "url": "urlTEST",
+  "redirectUrl": "redirectUrlTEST",
+  "order": 1,
+  "createUser": "addUser",
+  "updateUser": "admin"
+}

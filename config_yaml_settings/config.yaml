@@ -1,0 +1,11 @@
+mode: debug
+port: :9090
+url: http://127.0.0.1:9090
+max_check_count: 10
+system: 
+  first_db: mysql
+database:
+  name: backend_service
+  host: 127.0.0.1:3306
+  username: root
+  password: "@Aamother0120"

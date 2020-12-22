@@ -1,0 +1,103 @@
+--創建DB
+-- CREATE DATABASE
+-- IF 
+-- 	NOT EXISTS backend_service DEFAULT CHARACTER
+--     SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci
+
+-- 改變資料欄位的型別
+-- https://stackoverflow.com/questions/1356866/how-do-i-change-the-data-type-for-a-column-in-mysql
+-- ALTER TABLE  category Modify parent_id varchar(100)
+
+--創建User表格
+-- CREATE TABLE `User`
+-- (
+-- 	   `user_id` varchar(100) NOT NULL UNIQUE,
+--     `nick_name` varchar(100) ,
+--     `mobile` varchar(100) NOT NULL , 
+--     `password` varchar(100) NOT NULL,
+--     `address` varchar(100) NOT NULL,
+--     `is_deleted` BOOLEAN NOT NULL, 
+-- 	   `is_locked` BOOLEAN NOT NULL,
+--     `create_time` DATETIME NOT NULL,
+--     `update_time` DATETIME NOT NULL
+-- )
+
+
+-- CREATE TABLE `Product`
+-- (
+--     `product_id` varchar(100) NOT NULL UNIQUE,
+--     `product_name` varchar(100) NOT NULL,
+--     `product_intro` varchar(100) NOT NULL , 
+--     `category_id` varchar(100) NOT NULL,
+--     `category_name` varchar(100) NOT NULL,
+--     `product_cover_img` varchar(100) NOT NULL,
+--     `product_banner` varchar(100) NOT NULL, 
+--     `original_price` decimal NOT NULL,
+--     `selling_price` decimal NOT NULL,
+--     `stock_num` INT NOT NULL,
+--     `tag` varchar(10) NOT NULL,
+--     `sell_status` varchar(10) NOT NULL,
+--     `create_user` varchar(100) NOT NULL,
+--     `update_user` varchar(100) NOT NULL,
+--     `product_detail_content` varchar(100) NOT NULL,
+--     `is_deleted` BOOLEAN NOT NULL
+-- )
+
+-- CREATE TABLE `Order`
+-- (
+--     `order_id` varchar(100) NOT NULL UNIQUE,
+--     `user_id` varchar(100) NOT NULL,
+--     `mobile` varchar(100) NOT NULL , 
+--     `nick_name` varchar(100) NOT NULL,
+--     `order_detail` varchar(100) NOT NULL,
+--     `total_price` decimal NOT NULL,
+--     `pay_status` INT NOT NULL, 
+--     `pay_type` INT NOT NULL,
+--     `pay_time` datetime NOT NULL,
+--     `order_status` INT NOT NULL,
+--     `extra_info` varchar(100) NOT NULL,
+--     `user_address` nvarchar(100) NOT NULL,
+--     `is_deleted` boolean NOT NULL,
+--     `create_at` datetime NOT NULL,
+--     `update_at` datetime NOT NULL
+-- )
+
+-- CREATE TABLE `Category`
+-- (
+--     `category_id` varchar(100) NOT NULL UNIQUE,
+--     `name` varchar(100) NOT NULL,
+--     `desc` varchar(100) NOT NULL , 
+--     `order` varchar(100) NOT NULL,
+--     `parent_id` varchar(100) NOT NULL,
+--     `is_deleted` boolean NOT NULL
+-- )
+
+
+
+-- CREATE TABLE `CategoryResult`
+-- (
+--     `c1_category_id` varchar(100) NOT NULL,
+--     `c1_name` varchar(100) NOT NULL,
+--     `c1_desc` varchar(100) NOT NULL , 
+--     `c1_order` INT NOT NULL,
+--     `c1_parent_id` varchar(100) NOT NULL,
+--     `c2_category_id` varchar(100) NOT NULL, 
+--     `c2_name` varchar(100) NOT NULL,
+--     `c2_order` INT NOT NULL,
+--     `c2_parent_id` varchar(100) NOT NULL,
+--     `c3_category_id` varchar(100) NOT NULL,
+--     `c3_name` varchar(100) NOT NULL,
+--     `c3_order` INT NOT NULL,
+--     `c3_parent_id` varchar(100) NOT NULL,
+--     `c3_is_deleted` boolean NOT NULL
+-- )
+
+-- CREATE TABLE `Banner`
+-- (
+--     `banner_id` varchar(100) NOT NULL UNIQUE,
+--     `url` varchar(100) NOT NULL,
+--     `redirect_url` varchar(100) NOT NULL , 
+--     `order` INT NOT NULL,
+--     `create_user` varchar(100) NOT NULL,
+--     `update_user` varchar(100) NOT NULL
+-- )

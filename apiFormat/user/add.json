@@ -1,0 +1,18 @@
+{
+    "nickName": "wong3",
+    "mobile": "0988991881",
+    "password": "test789",
+    "address": "測試地址789",
+    "isDeleted": false,
+    "isLocked": false
+}
+
+{
+    "userId": "d5fc1a2c-56e7-49ca-8e23-a7a652712dbf",
+    "nickName": "wong3",
+    "mobile": "0988991883",
+    "password": "test789",
+    "address": "測試地址789",
+    "isDeleted": false,
+    "isLocked": false
+}
