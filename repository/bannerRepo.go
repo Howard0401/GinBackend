@@ -36,9 +36,10 @@ func (repo *BannerRepository) Exist(Banner model.Banner) *model.Banner {
 }
 
 func (repo *BannerRepository) Add(Banner model.Banner) (*model.Banner, error) {
-	if Banner.BannerId == "" {
-		Banner.BannerId = uuid.NewV4().String()
-	}
+	// if Banner.BannerId == "" {
+	// 	Banner.BannerId = uuid.NewV4().String()
+	// }
+	Banner.BannerId = uuid.NewV4().String()
 	exist := repo.Exist(Banner)
 	if exist != nil && exist.Url == Banner.Url && exist.RedirectUrl == Banner.RedirectUrl {
 		return nil, fmt.Errorf("banner exist")
@@ -69,7 +70,7 @@ func (repo *BannerRepository) Edit(Banner model.Banner) (bool, error) {
 	err := repo.DB.Model(b).Where("banner_id = ? ", Banner.BannerId).Updates(map[string]interface{}{
 		"url":          Banner.Url,
 		"redirect_url": Banner.RedirectUrl,
-		"order":        Banner.Order,
+		"order_by_idx": Banner.Order,
 	}).Error
 	if err != nil {
 		return false, err
@@ -100,10 +101,10 @@ func (repo *BannerRepository) GetTotal(req *query.ListQuery) (total int64, err e
 }
 
 func (repo *BannerRepository) List(req *query.ListQuery) (banners []*model.Banner, err error) {
-	// fmt.Printf("%v", req)
+
 	db := repo.DB
 	limit, offset := utils.Page(req.PageSize, req.Page)
-	if err := db.Limit(limit).Offset(offset).Find(&banners).Error; err != nil {
+	if err := db.Limit(limit).Offset(offset).Order("order_by_idx").Find(&banners).Error; err != nil {
 		return nil, err
 	}
 	return banners, nil

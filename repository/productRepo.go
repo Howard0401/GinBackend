@@ -23,14 +23,17 @@ type ProductRepoInterface interface {
 
 	List(req *query.ListQuery) (Products []*model.Product, err error)
 	GetTotal(req *query.ListQuery) (total int64, err error)
-	ExistByProductID(id string) *model.Product
+	ExistByProductID(id string) (*model.Product, error)
 }
 
 //待改
-func (repo *ProductRepository) ExistByProductID(id string) *model.Product {
+func (repo *ProductRepository) ExistByProductID(id string) (*model.Product, error) {
 	var p model.Product
-	repo.DB.Where("product_id = ?", id).First(&p)
-	return &p
+	err := repo.DB.Model(&p).Where("product_id = ?", id).Find(&p).Error
+	if err != nil {
+		return &p, err
+	}
+	return &p, nil
 }
 
 func (repo *ProductRepository) List(req *query.ListQuery) (products []*model.Product, err error) {
@@ -141,7 +144,7 @@ func (repo *ProductRepository) Edit(Product model.Product) (bool, error) {
 
 //Delete
 func (repo *ProductRepository) Delete(Product model.Product) (bool, error) {
-	err := repo.DB.Model(&Product).Where("prooduct_id=?", Product.ProductId).Update("isdeleted", Product.IsDeleted).Error
+	err := repo.DB.Model(&Product).Where("product_id=?", Product.ProductId).Update("is_deleted", Product.IsDeleted).Error
 	if err != nil {
 		return false, err
 	}

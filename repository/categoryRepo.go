@@ -93,7 +93,8 @@ func (repo *CategoryRepository) Edit(Category model.Category) (bool, error) {
 }
 
 func (repo *CategoryRepository) Delete(Category model.Category) (bool, error) {
-	err := repo.DB.Model(&Category).Where("category_id=?", Category.CategoryId).Update("is_deleted", true).Error
+	//軟刪除
+	err := repo.DB.Model(&Category).Where("category_id=?", Category.CategoryId).Update("is_deleted", !Category.IsDeleted).Error
 	if err != nil {
 		return false, err
 	}
