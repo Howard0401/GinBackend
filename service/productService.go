@@ -48,7 +48,7 @@ func (srv *ProductService) Add(Product model.Product) (*model.Product, error) {
 
 func (srv *ProductService) Edit(Product model.Product) (bool, error) {
 	p, err := srv.ExistByProductID(Product.ProductId)
-	if err == nil || p.ProductName == "" {
+	if err != nil || p.ProductName == "" {
 		return false, err
 	}
 	return srv.Repo.Edit(Product)
