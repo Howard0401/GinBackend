@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserReposoitory struct {
+type UserRepository struct {
 	DB *gorm.DB
 }
 
@@ -26,7 +26,7 @@ type UserRepoInterface interface {
 	Delete(user model.User) (bool, error)
 }
 
-func (repo *UserReposoitory) List(req *query.ListQuery) (users []*model.User, err error) {
+func (repo *UserRepository) List(req *query.ListQuery) (users []*model.User, err error) {
 	// fmt.Println(req)
 	//後端先處理好分頁，再直接返回給前端
 	limit, offset := utils.Page(req.PageSize, req.Page)
@@ -37,7 +37,7 @@ func (repo *UserReposoitory) List(req *query.ListQuery) (users []*model.User, er
 }
 
 //Create
-func (repo *UserReposoitory) Add(user model.User) (*model.User, error) {
+func (repo *UserRepository) Add(user model.User) (*model.User, error) {
 	if err := repo.Exist(user); err != nil {
 		return nil, fmt.Errorf("用戶已存在")
 	}
@@ -49,7 +49,7 @@ func (repo *UserReposoitory) Add(user model.User) (*model.User, error) {
 }
 
 //Read
-func (repo *UserReposoitory) Get(user model.User) (*model.User, error) {
+func (repo *UserRepository) Get(user model.User) (*model.User, error) {
 	if err := repo.DB.Where("user_id = ?", user.UserId).First(&user).Error; err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (repo *UserReposoitory) Get(user model.User) (*model.User, error) {
 }
 
 //Update
-func (repo *UserReposoitory) Edit(user model.User) (bool, error) {
+func (repo *UserRepository) Edit(user model.User) (bool, error) {
 	err := repo.DB.Model(&user).Where("user_id=?", user.UserId).Updates(map[string]interface{}{"nick_name": user.NickName, "mobile": user.Mobile, "address": user.Address, "create_time": user.CreateTime, "update_time": time.Now()}).Error
 	if err != nil {
 		return false, err
@@ -66,7 +66,7 @@ func (repo *UserReposoitory) Edit(user model.User) (bool, error) {
 }
 
 //Delete
-func (repo *UserReposoitory) Delete(user model.User) (bool, error) {
+func (repo *UserRepository) Delete(user model.User) (bool, error) {
 	err := repo.DB.Model(&user).Where("user_id=?", user.UserId).Update("is_deleted", user.IsDeleted).Error
 	if err != nil {
 		return false, err
@@ -75,7 +75,7 @@ func (repo *UserReposoitory) Delete(user model.User) (bool, error) {
 }
 
 //Query User Count
-func (repo *UserReposoitory) GetTotal(req *query.ListQuery) (total int64, err error) {
+func (repo *UserRepository) GetTotal(req *query.ListQuery) (total int64, err error) {
 	var users []model.User
 	// db := repo.DB
 	// if req.Where != "" {
@@ -88,7 +88,7 @@ func (repo *UserReposoitory) GetTotal(req *query.ListQuery) (total int64, err er
 }
 
 //Query Exist //可以這樣改計次嗎?待確認
-func (repo *UserReposoitory) Exist(user model.User) *model.User {
+func (repo *UserRepository) Exist(user model.User) *model.User {
 	var count int64
 	err := repo.DB.Find(&user).Where("nick_name=?", user.NickName).Count(&count).Error
 	if count > 0 && err != nil {
@@ -98,14 +98,14 @@ func (repo *UserReposoitory) Exist(user model.User) *model.User {
 }
 
 //Query userID
-func (repo *UserReposoitory) ExistByUserID(id string) *model.User {
+func (repo *UserRepository) ExistByUserID(id string) *model.User {
 	var user model.User
 	repo.DB.Where("user_id=?", id).First(&user)
 	return &user
 }
 
 //可以這樣改計次嗎?待確認
-func (repo *UserReposoitory) ExistByUserMobile(mobile string) *model.User {
+func (repo *UserRepository) ExistByUserMobile(mobile string) *model.User {
 	var count int64
 	var user model.User
 	repo.DB.Find(&user).Where("mobile= ?", mobile).Count(&count)

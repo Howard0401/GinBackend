@@ -9,8 +9,9 @@ import (
 
 var (
 	Global_DB     *gorm.DB
-	Global_Config config.Config
 	Global_Viper  *viper.Viper
+	Global_Config config.Config
+	// Global_JWT
 	// BannerHandler   handler.BannerHandler
 	// CategoryHandler handler.CategoryHandler
 	// OrderHandler    handler.OrderHandler

@@ -13,7 +13,10 @@ func Routers(r *gin.Engine) *gin.Engine {
 	//register Cors middleware
 	// r.Use(middleware.Cors())
 	// gin.SetMode(viper.GetString("mode"))
-
+	PublicGroup := r.Group("")
+	{
+		router.InitLoginRouter(PublicGroup)
+	}
 	PrivateGroup := r.Group("/api")
 	PrivateGroup.Use()
 	{

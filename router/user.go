@@ -12,7 +12,7 @@ import (
 func InitUserRouter(r *gin.RouterGroup) {
 	methods := handler.UserHandler{
 		UserSrv: &service.UserService{
-			Repo: &repository.UserReposoitory{
+			Repo: &repository.UserRepository{
 				DB: global.Global_DB,
 			},
 		}}

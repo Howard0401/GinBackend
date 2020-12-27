@@ -37,7 +37,7 @@ func (repo *ProductRepository) ExistByProductID(id string) (*model.Product, erro
 }
 
 func (repo *ProductRepository) List(req *query.ListQuery) (products []*model.Product, err error) {
-	fmt.Println(req)
+	// fmt.Println(req)
 	db := repo.DB
 	limit, offset := utils.Page(req.PageSize, req.Page) // 分页
 

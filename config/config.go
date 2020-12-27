@@ -30,7 +30,7 @@ func (c *Config) loadConfig() error {
 	if c.Name != "" {
 		c.Vp.SetConfigFile(c.Name)
 	} else {
-		c.Vp.AddConfigPath("config_yaml_settings")
+		c.Vp.AddConfigPath("config")
 		c.Vp.SetConfigName("config")
 	}
 	c.Vp.SetConfigType("yaml")

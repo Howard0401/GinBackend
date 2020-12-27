@@ -9,3 +9,7 @@ database:
   host: 127.0.0.1:3306
   username: root
   password: "@Aamother0120"
+JWT:
+  Secret:  secretKeyIsHere
+  Issuer:  vueGinRefactor
+  Expire: 7200

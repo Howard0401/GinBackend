@@ -1,7 +1,6 @@
 package initSettings
 
 import (
-	"VueGin/config"
 	"VueGin/global"
 	"fmt"
 	"log"
@@ -10,6 +9,16 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
+
+type DBconf struct {
+	Driver   string
+	Host     string
+	Port     string
+	User     string
+	Password string
+	DBName   string
+	Charset  string //編碼
+}
 
 func Gorm() (*gorm.DB, error) {
 	// fmt.Println(global.Global_Viper)
@@ -25,7 +34,7 @@ func Gorm() (*gorm.DB, error) {
 
 func GormMySQL() (*gorm.DB, error) {
 	fmt.Println("init MySQLDB starting...")
-	dbStr := &config.DBconf{
+	dbStr := &DBconf{
 		Host:     global.Global_Viper.GetString("database.host"),
 		User:     global.Global_Viper.GetString("database.username"),
 		Password: global.Global_Viper.GetString("database.password"),
@@ -40,7 +49,7 @@ func GormMySQL() (*gorm.DB, error) {
 	//DB, err = gorm.Open("mysql", config)
 	//注意下方是gorm v2的版本
 	//https://github.com/go-gorm/mysql
-	//特別注意，這邊DB為修改全域變數，所以不可再用:=推斷一次，會導致操作gorm時報錯：invalid memory address or nil pointer dereference
+	//特別注意，這邊DB要注意起始值，若先前沒重構時，是修改全域變數的情況，所以若不可再用:=推斷一次，會導致操作gorm時報錯：invalid memory address or nil pointer dereference
 	var err error
 	DB, err := gorm.Open(mysql.Open(config), &gorm.Config{NamingStrategy: schema.NamingStrategy{SingularTable: true}})
 	if err != nil {
