@@ -22,16 +22,16 @@ type AuthService struct {
 	Repo repository.AuthRepoInterface
 }
 
-//有種寫法是把CheckAuth放在Service層，GetAuth放在Service層內的dao，dao中有使用model層的方法Get，從資料庫內尋找
+//有種寫法是把CheckAuth放在Service層，GetAuth放在與Service層平行的dao，而dao中使用model層的方法Get，從資料庫內尋找驗證是否存在
 //跟拆成Service和Repository明顯不同，但哪個好？
 func (srv *AuthService) GetToken(user model.User) (string, error) {
 
-	nickName, err := srv.Repo.CheckUserAuth(user)
+	userModel, err := srv.Repo.CheckUserAuth(user)
 	if err != nil {
 		return "", fmt.Errorf("CheckUserAuth error: %v", err)
 	}
-
-	token, err := utils.GenerateToken(nickName)
+	//建構一個JWT struct 並放進Token
+	token, err := utils.NewJWT().GenerateToken(userModel)
 	if err != nil {
 		return "", fmt.Errorf("GenerateToken error: %v", err)
 	} else {

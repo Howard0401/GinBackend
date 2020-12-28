@@ -1,6 +1,7 @@
 package initSettings
 
 import (
+	"VueGin/middleware"
 	"VueGin/router"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,7 @@ func Routers(r *gin.Engine) *gin.Engine {
 		router.InitLoginRouter(PublicGroup)
 	}
 	PrivateGroup := r.Group("/api")
-	PrivateGroup.Use()
+	PrivateGroup.Use(middleware.JWT())
 	{
 		router.InitBannerRouter(PrivateGroup)
 		router.InitCategoryRouter(PrivateGroup)

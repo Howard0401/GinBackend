@@ -13,15 +13,15 @@ type AuthRepository struct {
 }
 
 type AuthRepoInterface interface {
-	CheckUserAuth(User model.User) (string, error)
+	CheckUserAuth(User model.User) (model.User, error)
 }
 
-func (repo *AuthRepository) CheckUserAuth(User model.User) (string, error) {
+func (repo *AuthRepository) CheckUserAuth(User model.User) (model.User, error) {
 	var u model.User
 	forCryptPassword := fmt.Sprintf("password%v@forCrypt", User.Password)
 	err := repo.DB.Model(&u).Where("nick_name=? AND passward=?", User.NickName, forCryptPassword).Error
 	if err != nil {
-		return "", errors.New("帳號密碼錯誤")
+		return model.User{}, errors.New("帳號密碼錯誤")
 	}
-	return u.NickName, nil
+	return u, nil
 }

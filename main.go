@@ -7,13 +7,16 @@ import (
 	server "VueGin/server"
 )
 
+var CongfigName string
+
 func init() {
 	//1.匯入Cnnfig設定 Import Viper to set up config
-	CongfigName := ""
+	CongfigName = ""
 	config, err := config.InitViper(CongfigName)
 	if err != nil {
 		panic(err)
 	}
+	CongfigName = config.Name
 	global.Global_Viper = config.Vp
 	//2. 匯入GORM  Add Gorm to global variable
 	global.Global_DB, err = initSettings.Gorm()
