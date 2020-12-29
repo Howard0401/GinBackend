@@ -4,10 +4,9 @@ import (
 	"VueGin/global"
 	"VueGin/handler"
 	"VueGin/initSettings"
-	"VueGin/middleware"
+	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -21,16 +20,22 @@ var (
 func RunServer() {
 	//ver1. 使用gin設定路由、啟動API
 	r := gin.Default()
-	r.Use(middleware.Cors())
 
 	initSettings.Routers(r)
-	gin.SetMode(viper.GetString("mode"))
+	//這兩種都可以
+	// gin.SetMode(viper.GetString("system.mode"))
+	// port := global.Global_Viper.GetString("system.port")
 
-	port := global.Global_Viper.GetString("port")
-	r.Run(port)
-	// if err := r.Run(port); err != nil {
-	// 	log.Fatalf("r.Run(port) failed:%v", err)
-	// }
+	//此處直接匯入global Config Settings
+	mode := global.Global_Config.System.Mode
+	gin.SetMode(mode)
+
+	port := global.Global_Config.System.Port
+	err := r.Run(port)
+
+	if err != nil {
+		log.Fatalf("r.Run(port) failed:%v", err)
+	}
 
 	//TODO: ver2. 使用gin設定路由、使用原生Http監聽，並用middleware設定CasbinHandler攔截訊息
 	// r := gin.Default()

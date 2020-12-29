@@ -7,19 +7,26 @@ import (
 	server "VueGin/server"
 )
 
-var CongfigName string
+var CongfigName string = ""
 
 func init() {
 	//1.匯入Cnnfig設定 Import Viper to set up config
-	CongfigName = ""
+	// CongfigName = ""
 	config, err := config.InitViper(CongfigName)
 	if err != nil {
 		panic(err)
 	}
 	CongfigName = config.Name
-	global.Global_Viper = config.Vp
+	global.Global_Viper = config.Vp //雖已使用mapstructure，將.yaml檔匯入Config中，此處仍先暫時保留Viper
+
 	//2. 匯入GORM  Add Gorm to global variable
 	global.Global_DB, err = initSettings.Gorm()
+	if err != nil {
+		panic(err)
+	}
+
+	//3.初始化zap logger參數
+	global.Global_Logger, err = initSettings.InitLogger()
 	if err != nil {
 		panic(err)
 	}
@@ -36,7 +43,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
-	//3.全域已讀取Config與DB，執行Gin伺服器  Run Gin Server
+	defer db.Close() //主程式結束後關閉DB
+
+	//4.全域已讀取Config與DB，執行Gin伺服器  Run Gin Server
 	server.RunServer()
 }

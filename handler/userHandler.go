@@ -1,6 +1,7 @@
 package handler
 
 import (
+	utils "VueGin/Utils"
 	enum "VueGin/enum"
 	model "VueGin/model"
 	"VueGin/repository/query"
@@ -43,6 +44,7 @@ func (h *UserHandler) UserInfo(c *gin.Context) {
 	uid := c.Param("id")
 	if uid == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	query := model.User{
@@ -52,6 +54,7 @@ func (h *UserHandler) UserInfo(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	output := h.GetEntity(*result)
@@ -63,6 +66,7 @@ func (h *UserHandler) UserInfo(c *gin.Context) {
 		Data:      output,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *UserHandler) UserList(c *gin.Context) {
@@ -76,9 +80,10 @@ func (h *UserHandler) UserList(c *gin.Context) {
 	}
 
 	err := c.ShouldBindQuery(&q)
-	fmt.Println(q)
+	// fmt.Println(q)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -117,6 +122,7 @@ func (h *UserHandler) UserList(c *gin.Context) {
 		Data:      newList,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *UserHandler) AddUser(c *gin.Context) {
@@ -132,7 +138,9 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&u)
 	// fmt.Println(u)
 	if err != nil {
+		entity.Data = err
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	//使用商業邏輯Service(內含Repository)
@@ -141,17 +149,20 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 	if err != nil {
 		entity.Msg = err.Error()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	//若加入ID為空
 	if result.UserId == "" {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	//回傳
 	entity.Code = int(enum.ResOK)
 	entity.Msg = enum.ResOK.String()
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *UserHandler) EditUser(c *gin.Context) {
@@ -165,16 +176,20 @@ func (h *UserHandler) EditUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&u)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
+		return
 	}
 	success, err := h.UserSrv.Edit(u)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = enum.ResOK.String()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 }
 
@@ -189,11 +204,13 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 	success, err := h.UserSrv.Delete(id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = enum.ResOK.String()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 }

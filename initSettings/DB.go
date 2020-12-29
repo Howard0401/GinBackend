@@ -21,10 +21,9 @@ type DBconf struct {
 }
 
 func Gorm() (*gorm.DB, error) {
-	// fmt.Println(global.Global_Viper)
-	e := global.Global_Viper.GetString("system.first_db")
-	fmt.Println(e)
-	switch global.Global_Viper.GetString("system.first_db") {
+	// e := global.Global_Viper.GetString("system.first_db")
+	e := global.Global_Config.System.FirstDB
+	switch e {
 	case "mysql":
 		return GormMySQL()
 	default:
@@ -35,10 +34,10 @@ func Gorm() (*gorm.DB, error) {
 func GormMySQL() (*gorm.DB, error) {
 	fmt.Println("init MySQLDB starting...")
 	dbStr := &DBconf{
-		Host:     global.Global_Viper.GetString("database.host"),
-		User:     global.Global_Viper.GetString("database.username"),
-		Password: global.Global_Viper.GetString("database.password"),
-		DBName:   global.Global_Viper.GetString("database.name"),
+		Host:     global.Global_Config.MySQL.Host,
+		User:     global.Global_Config.MySQL.UserName,
+		Password: global.Global_Config.MySQL.Password,
+		DBName:   global.Global_Config.MySQL.Name,
 	}
 
 	config := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true&charset=utf8&parseTime=%t&loc=%s",

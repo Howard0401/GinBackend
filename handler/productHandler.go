@@ -1,6 +1,7 @@
 package handler
 
 import (
+	utils "VueGin/Utils"
 	"VueGin/enum"
 	"VueGin/model"
 	"VueGin/repository/query"
@@ -48,6 +49,7 @@ func (h *ProductHandler) ProductInfo(c *gin.Context) {
 	pid := c.Param("id")
 	if pid == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	input := model.Product{
@@ -56,6 +58,7 @@ func (h *ProductHandler) ProductInfo(c *gin.Context) {
 	result, err := h.ProductSrv.Get(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -69,6 +72,7 @@ func (h *ProductHandler) ProductInfo(c *gin.Context) {
 		Data:      data,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *ProductHandler) ProductList(c *gin.Context) {
@@ -85,6 +89,7 @@ func (h *ProductHandler) ProductList(c *gin.Context) {
 	err := c.ShouldBindQuery(&q)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	//確定分頁數量
@@ -92,12 +97,14 @@ func (h *ProductHandler) ProductList(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("List Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	total, err := h.ProductSrv.GetTotal(&q)
 	if err != nil {
 		entity.Msg = fmt.Sprintf("GetTotal Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -130,6 +137,7 @@ func (h *ProductHandler) ProductList(c *gin.Context) {
 		Data:      outputList,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *ProductHandler) AddProduct(c *gin.Context) {
@@ -144,6 +152,7 @@ func (h *ProductHandler) AddProduct(c *gin.Context) {
 	// fmt.Println(p)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -151,12 +160,14 @@ func (h *ProductHandler) AddProduct(c *gin.Context) {
 	if err != nil {
 		entity.Msg = err.Error()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	entity.Code = int(enum.ResOK)
 	entity.Msg = "OK,已添加Data"
 	entity.Data = result
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *ProductHandler) EditProduct(c *gin.Context) {
@@ -170,17 +181,20 @@ func (h *ProductHandler) EditProduct(c *gin.Context) {
 	err := c.ShouldBindJSON(&p)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
 	success, err := h.ProductSrv.Edit(p)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = enum.ResOK.String()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 }
 
@@ -196,11 +210,13 @@ func (h *ProductHandler) DeleteProduct(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = fmt.Sprintf("刪除成功，id:%s", id)
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 }

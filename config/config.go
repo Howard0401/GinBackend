@@ -1,6 +1,9 @@
 package config
 
 import (
+	settings "VueGin/config/settingModels"
+	"VueGin/global"
+	"fmt"
 	"log"
 
 	"github.com/fsnotify/fsnotify"
@@ -8,8 +11,9 @@ import (
 )
 
 type Config struct {
-	Name string
-	Vp   *viper.Viper
+	Name     string
+	Vp       *viper.Viper
+	Settings settings.ConfigSettings
 }
 
 //Constructor
@@ -22,6 +26,13 @@ func InitViper(name string) (Config, error) {
 		return c, err
 	}
 	c.watchConfig()
+	if err := c.parseConfig(); err != nil {
+		return c, err
+	}
+	fmt.Println(global.Global_Config.Log)
+	// fmt.Println(global.Global_Config.System)
+	// fmt.Println(global.Global_Config.JWT)
+	// fmt.Println(global.Global_Config.MySQL)
 	return c, nil
 }
 
@@ -37,6 +48,7 @@ func (c *Config) loadConfig() error {
 	if err := c.Vp.ReadInConfig(); err != nil {
 		return err
 	}
+	// fmt.Println(global.Global_Config)
 	return nil
 }
 
@@ -47,4 +59,10 @@ func (c *Config) watchConfig() {
 		//這邊如果在生產環境，可以用channel配合goroutine紀錄(因為可能會有非同步的情形)
 		log.Printf("Config file changed: %s", in.Name)
 	})
+}
+
+//mapturecture解析yaml檔案
+func (c *Config) parseConfig() error {
+	err := c.Vp.Unmarshal(&global.Global_Config)
+	return err
 }

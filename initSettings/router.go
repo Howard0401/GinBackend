@@ -10,16 +10,20 @@ import (
 //注意回傳型別
 func Routers(r *gin.Engine) *gin.Engine {
 
-	// r := gin.Default()
+	//middleware
+	//其實，呼叫Default時，就已預設使用Logger(), Recovery()這兩個middleware
+	//這邊使用zaplog設定，抽換原先Gin預設的log
+	r.Use(middleware.GinLogger(), middleware.GinRecovery(true))
 	//register Cors middleware
-	// r.Use(middleware.Cors())
-	// gin.SetMode(viper.GetString("mode"))
+	r.Use(middleware.Cors())
+
 	PublicGroup := r.Group("")
 	{
 		router.InitLoginRouter(PublicGroup)
 	}
 	PrivateGroup := r.Group("/api")
-	PrivateGroup.Use(middleware.JWT())
+	// PrivateGroup.Use(middleware.JWT()) //登入後需驗證JWT token
+	PrivateGroup.Use()
 	{
 		router.InitBannerRouter(PrivateGroup)
 		router.InitCategoryRouter(PrivateGroup)

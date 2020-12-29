@@ -1,6 +1,7 @@
 package handler
 
 import (
+	utils "VueGin/Utils"
 	"VueGin/enum"
 	"VueGin/model"
 	"VueGin/repository/query"
@@ -46,6 +47,7 @@ func (h *OrderHandler) OrderInfo(c *gin.Context) {
 	oid := c.Param("id")
 	if oid == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -58,6 +60,7 @@ func (h *OrderHandler) OrderInfo(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -71,6 +74,7 @@ func (h *OrderHandler) OrderInfo(c *gin.Context) {
 		Data:      unpack,
 	}
 	c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *OrderHandler) OrderList(c *gin.Context) {
@@ -85,6 +89,7 @@ func (h *OrderHandler) OrderList(c *gin.Context) {
 	err := c.ShouldBindQuery(&q)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	list, err := h.OrderSrv.List(&q)
@@ -97,6 +102,7 @@ func (h *OrderHandler) OrderList(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("GetTotal Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -128,6 +134,7 @@ func (h *OrderHandler) OrderList(c *gin.Context) {
 		Data:      output,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *OrderHandler) AddOrder(c *gin.Context) {
@@ -143,23 +150,27 @@ func (h *OrderHandler) AddOrder(c *gin.Context) {
 	err := c.ShouldBindJSON(&o)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	result, err := h.OrderSrv.Add(o)
 
 	if err != nil {
 		entity.Msg = err.Error()
+		utils.EntityLog(entity)
 		return
 	}
 
 	if result.OrderId == "" {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
 	entity.Code = int(enum.ResOK)
 	entity.Msg = enum.ResOK.String()
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
+	utils.EntityLog(entity)
 }
 
 func (h *OrderHandler) EditOrder(c *gin.Context) {
@@ -174,18 +185,21 @@ func (h *OrderHandler) EditOrder(c *gin.Context) {
 
 	if err != nil || o.OrderId == "" {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
 	success, err := h.OrderSrv.Edit(o)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = fmt.Sprintf("編輯成功 %v", o)
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 }
 
@@ -202,12 +216,14 @@ func (h *OrderHandler) DeleteOrder(c *gin.Context) {
 	//沒有返回o時
 	if o == nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 	success, err := h.OrderSrv.Delete(*o)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 		return
 	}
 
@@ -215,5 +231,6 @@ func (h *OrderHandler) DeleteOrder(c *gin.Context) {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = fmt.Sprintf("刪除成功, id:%s", id)
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		utils.EntityLog(entity)
 	}
 }
