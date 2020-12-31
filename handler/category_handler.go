@@ -1,7 +1,7 @@
 package handler
 
 import (
-	utils "VueGin/Utils"
+	format "VueGin/Utils/logFormat"
 	"VueGin/enum"
 	"VueGin/model"
 	"VueGin/repository/query"
@@ -31,7 +31,7 @@ func (h *CategoryHandler) CategoryListForBackend(c *gin.Context) {
 	err := c.ShouldBindQuery(&q)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
@@ -43,7 +43,7 @@ func (h *CategoryHandler) CategoryListForBackend(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("List Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	//計算該分類總數
@@ -51,7 +51,7 @@ func (h *CategoryHandler) CategoryListForBackend(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("GetTotal Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	//傳給前端要開的分頁數
@@ -73,7 +73,7 @@ func (h *CategoryHandler) CategoryListForBackend(c *gin.Context) {
 		Data:      list,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
-	utils.EntityLog(entity)
+	format.EntityLog(entity)
 }
 
 //解包
@@ -130,7 +130,7 @@ func (h *CategoryHandler) CategoryList(c *gin.Context) {
 	err := c.ShouldBindQuery(&q)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	if q.PageSize == 0 {
@@ -140,14 +140,14 @@ func (h *CategoryHandler) CategoryList(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("List Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	total, err := h.CategorySrv.GetTotal(&q)
 	if err != nil {
 		entity.Msg = fmt.Sprintf("GetTotal Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	//解包
@@ -167,7 +167,7 @@ func (h *CategoryHandler) CategoryList(c *gin.Context) {
 		Data:      unpackMap,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
-	utils.EntityLog(entity)
+	format.EntityLog(entity)
 }
 
 func (h *CategoryHandler) CategoryInfo(c *gin.Context) {
@@ -181,7 +181,7 @@ func (h *CategoryHandler) CategoryInfo(c *gin.Context) {
 	cid := c.Param("id")
 	if cid == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
@@ -189,7 +189,7 @@ func (h *CategoryHandler) CategoryInfo(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
@@ -203,7 +203,7 @@ func (h *CategoryHandler) CategoryInfo(c *gin.Context) {
 		Data:      unpack,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
-	utils.EntityLog(entity)
+	format.EntityLog(entity)
 }
 
 //增加子分類(model.CategoryResult{})
@@ -219,7 +219,7 @@ func (h *CategoryHandler) AddCategory(c *gin.Context) {
 	fmt.Println(category)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
@@ -227,20 +227,20 @@ func (h *CategoryHandler) AddCategory(c *gin.Context) {
 	if err != nil {
 		entity.Msg = err.Error()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
 	if !success {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
 	entity.Code = int(enum.ResOK)
 	entity.Msg = fmt.Sprintf("添加分類成功:%v", category)
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
-	utils.EntityLog(entity)
+	format.EntityLog(entity)
 }
 
 //編輯分類
@@ -257,21 +257,21 @@ func (h *CategoryHandler) EditCategory(c *gin.Context) {
 	fmt.Println(category)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	fmt.Println(category)
 	success, err := h.CategorySrv.Edit(category)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = enum.ResOK.String()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 	}
 }
 
@@ -287,13 +287,13 @@ func (h *CategoryHandler) DeleteCategory(c *gin.Context) {
 	}
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = fmt.Sprintf("刪除成功,id:%s", id)
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 	}
 }

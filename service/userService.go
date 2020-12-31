@@ -1,7 +1,7 @@
 package service
 
 import (
-	utils "VueGin/Utils"
+	md5 "VueGin/Utils/crypto"
 	"VueGin/model"
 	"VueGin/repository"
 	"VueGin/repository/query"
@@ -65,7 +65,7 @@ func (srv *UserService) Add(User model.User) (*model.User, error) {
 		Mobile:     User.Mobile,
 		NickName:   User.NickName,
 		Address:    User.Address,
-		Password:   utils.Md5(forCryptPassword),
+		Password:   md5.Md5(forCryptPassword),
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 		IsDeleted:  false,

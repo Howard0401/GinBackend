@@ -1,7 +1,7 @@
 package repository
 
 import (
-	utils "VueGin/Utils"
+	page "VueGin/Utils/pageFormat"
 	"VueGin/model"
 	"VueGin/repository/query"
 	"fmt"
@@ -30,7 +30,7 @@ type OrderRepoInterface interface {
 
 func (repo *OrderRepository) List(req *query.ListQuery) (Orders []*model.Order, err error) {
 	fmt.Printf("%v", req)
-	limit, offset := utils.Page(req.PageSize, req.Page)
+	limit, offset := page.Page(req.PageSize, req.Page)
 	if err := repo.DB.Limit(limit).Offset(offset).Find(&Orders).Error; err != nil {
 		return nil, err
 	}

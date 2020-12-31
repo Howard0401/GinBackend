@@ -1,6 +1,7 @@
-package utils
+package jwt
 
 import (
+	md5 "VueGin/Utils/crypto"
 	"VueGin/global"
 	"VueGin/model"
 	"time"
@@ -37,7 +38,7 @@ func (j *JWT) GenerateToken(User model.User) (string, error) {
 	claims := Claims{
 		//自定義認證
 		Id:       User.UserId,
-		NickName: Md5(User.NickName),
+		NickName: md5.Md5(User.NickName),
 		StandardClaims: jwt.StandardClaims{ //對應JWT中Payload的字串
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    global.Global_Viper.GetString("JWT.Issuer"),

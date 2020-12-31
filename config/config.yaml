@@ -4,18 +4,31 @@ system:
   port: :9090
   url: http://127.0.0.1:9090
   max_check_count: 10
+  timeout: 1
+
 mysql:
   name: backend_service
   host: 127.0.0.1:3306
   username: root
   password: "@Aamother0120"
+
 jwt:
   secret:  secretKeyIsHere
   issuer:  vueGinRefactor
   expire: 7200
+
 log:
   level: debug
   filename: "server.log"
   max_size: 200
   max_age: 7
   max_backups: 10
+  
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  ssl: true
+  user_name: crystalismylove0401@gmail.com
+  password: qxyljrkgavqrpogb
+  from: crystalismylove0401@gmail.com
+  to: chenhoward0401@gmail.com

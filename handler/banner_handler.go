@@ -1,7 +1,7 @@
 package handler
 
 import (
-	utils "VueGin/Utils"
+	format "VueGin/Utils/logFormat"
 	"VueGin/enum"
 	"VueGin/model"
 	"VueGin/repository/query"
@@ -44,7 +44,7 @@ func (h *BannerHandler) BannerInfo(c *gin.Context) {
 	if bid == "" {
 		entity.Msg = "請傳入ID!!!"
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	b := model.Banner{BannerId: bid} //若不指定id，會回傳資料庫中的第一筆
@@ -53,7 +53,7 @@ func (h *BannerHandler) BannerInfo(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("查詢時發生錯誤:%v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	//解包，調整為輸出給前端的格式(Entity)
@@ -66,7 +66,7 @@ func (h *BannerHandler) BannerInfo(c *gin.Context) {
 		Data:      r,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
-	utils.EntityLog(entity)
+	format.EntityLog(entity)
 }
 
 func (h *BannerHandler) BannerList(c *gin.Context) {
@@ -83,7 +83,7 @@ func (h *BannerHandler) BannerList(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("提醒後端傳入query錯誤: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
@@ -92,7 +92,7 @@ func (h *BannerHandler) BannerList(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("List Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	total, err := h.BannerSrv.GetTotal(&q)
@@ -100,7 +100,7 @@ func (h *BannerHandler) BannerList(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("GetTotal Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
@@ -132,9 +132,9 @@ func (h *BannerHandler) BannerList(c *gin.Context) {
 		TotalPage: pages,
 		Data:      result,
 	}
-
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
-	utils.EntityLog(entity)
+	format.EntityLog(entity)
+
 }
 
 func (h *BannerHandler) AddBanner(c *gin.Context) {
@@ -149,7 +149,7 @@ func (h *BannerHandler) AddBanner(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("傳入JSON錯誤: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	result, err := h.BannerSrv.Add(b)
@@ -157,14 +157,14 @@ func (h *BannerHandler) AddBanner(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("Add Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 
 	entity.Code = int(enum.ResOK)
 	entity.Msg = fmt.Sprintf("添加成功:%v", result)
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
-	utils.EntityLog(entity)
+	format.EntityLog(entity)
 }
 
 func (h *BannerHandler) EditBanner(c *gin.Context) {
@@ -181,21 +181,21 @@ func (h *BannerHandler) EditBanner(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("傳入JSON錯誤: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	success, err := h.BannerSrv.Edit(b)
 	if err != nil {
 		entity.Msg = fmt.Sprintf("Edit Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = fmt.Sprintf("修改成功,id:%v", b.BannerId)
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 	}
 }
 
@@ -213,13 +213,13 @@ func (h *BannerHandler) DeleteBanner(c *gin.Context) {
 	if err != nil {
 		entity.Msg = fmt.Sprintf("Delete Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 		return
 	}
 	if success {
 		entity.Code = int(enum.ResOK)
 		entity.Msg = enum.ResOK.String()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		utils.EntityLog(entity)
+		format.EntityLog(entity)
 	}
 }

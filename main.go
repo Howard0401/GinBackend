@@ -33,7 +33,6 @@ func init() {
 
 }
 func main() {
-
 	//1.匯入Cnnfig設定 Import Viper to set up config
 	//2. 匯入GORM  Add Gorm to global variable
 	// 以上使用 init()初始化(為什麼要這樣寫呢？=>為了unit test單獨run時，可以讀取到起始的DB)

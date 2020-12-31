@@ -1,7 +1,7 @@
 package repository
 
 import (
-	utils "VueGin/Utils"
+	page "VueGin/Utils/pageFormat"
 	"VueGin/model"
 	query "VueGin/repository/query"
 	"fmt"
@@ -39,7 +39,7 @@ func (repo *ProductRepository) ExistByProductID(id string) (*model.Product, erro
 func (repo *ProductRepository) List(req *query.ListQuery) (products []*model.Product, err error) {
 	// fmt.Println(req)
 	db := repo.DB
-	limit, offset := utils.Page(req.PageSize, req.Page) // 分页
+	limit, offset := page.Page(req.PageSize, req.Page) // 分页
 
 	if err := db.Limit(limit).Offset(offset).Find(&products).Error; err != nil {
 		return nil, err

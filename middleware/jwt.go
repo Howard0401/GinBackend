@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	utils "VueGin/Utils"
+	jwt "VueGin/Utils/jwt"
 	"errors"
 	"fmt"
 	"net/http"
@@ -24,7 +24,7 @@ func JWT() gin.HandlerFunc {
 		// 1.返回JWT結構體，欄位含有toke NewJWT() return JWT struct, contains field SigInkey[]byte
 		// 2.用Pointer Recever建構方法Cnreate, Parse方法
 
-		claims, err := utils.NewJWT().ParseToken(token)
+		claims, err := jwt.NewJWT().ParseToken(token)
 		if err == errors.New("Token is expired") {
 			c.JSON(http.StatusOK, gin.H{"status": "授權過期，解析出錯"})
 			c.Abort()
@@ -39,7 +39,7 @@ func JWT() gin.HandlerFunc {
 		//若使用者持續再使用則延長Token(因為是後臺管理，若是用戶的話，可能diable這部分好些)
 		if claims.ExpiresAt-time.Now().Unix() < claims.BufferTime {
 			claims.ExpiresAt = time.Now().Unix() + 60*30 //每次重新操作延時30分鐘
-			newToken, err := utils.NewJWT().CreateToken(*claims)
+			newToken, err := jwt.NewJWT().CreateToken(*claims)
 			if err != nil {
 				fmt.Printf("CreateToken Failed: %v", err)
 			}

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	utils "VueGin/Utils"
+	page "VueGin/Utils/pageFormat"
 	"VueGin/model"
 	query "VueGin/repository/query"
 	"fmt"
@@ -29,7 +29,7 @@ type UserRepoInterface interface {
 func (repo *UserRepository) List(req *query.ListQuery) (users []*model.User, err error) {
 	// fmt.Println(req)
 	//後端先處理好分頁，再直接返回給前端
-	limit, offset := utils.Page(req.PageSize, req.Page)
+	limit, offset := page.Page(req.PageSize, req.Page)
 	if err := repo.DB.Order("user_id desc").Limit(limit).Offset(offset).Find(&users).Error; err != nil {
 		return nil, err
 	}

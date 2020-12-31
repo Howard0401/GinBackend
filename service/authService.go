@@ -1,7 +1,7 @@
 package service
 
 import (
-	utils "VueGin/Utils"
+	jwt "VueGin/Utils/jwt"
 	"VueGin/model"
 	"VueGin/repository"
 	"fmt"
@@ -31,7 +31,7 @@ func (srv *AuthService) GetToken(user model.User) (string, error) {
 		return "", fmt.Errorf("CheckUserAuth error: %v", err)
 	}
 	//建構一個JWT struct 並放進Token
-	token, err := utils.NewJWT().GenerateToken(userModel)
+	token, err := jwt.NewJWT().GenerateToken(userModel)
 	if err != nil {
 		return "", fmt.Errorf("GenerateToken error: %v", err)
 	} else {

@@ -5,4 +5,5 @@ type ConfigSettings struct {
 	MySQL  MySQL  `mapstructure:"mysql" yaml:"mysql"`
 	JWT    JWT    `mapstructure:"jwt" yaml:"jwt"`
 	Log    Log    `mapstructure:"log" yaml:"log"`
+	SMTP   SMTP   `mpatructure:"smtp" yaml:"smtp"`
 }

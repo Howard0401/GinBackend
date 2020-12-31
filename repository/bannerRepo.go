@@ -1,7 +1,7 @@
 package repository
 
 import (
-	utils "VueGin/Utils"
+	page "VueGin/Utils/pageFormat"
 	"VueGin/model"
 	"VueGin/repository/query"
 	"fmt"
@@ -103,7 +103,7 @@ func (repo *BannerRepository) GetTotal(req *query.ListQuery) (total int64, err e
 func (repo *BannerRepository) List(req *query.ListQuery) (banners []*model.Banner, err error) {
 
 	db := repo.DB
-	limit, offset := utils.Page(req.PageSize, req.Page)
+	limit, offset := page.Page(req.PageSize, req.Page)
 	if err := db.Limit(limit).Offset(offset).Order("order_by_idx").Find(&banners).Error; err != nil {
 		return nil, err
 	}
