@@ -1,0 +1,809 @@
+definitions:
+  model.Banner:
+    properties:
+      bannerId:
+        type: string
+      createUser:
+        description: Order       int    `json:"order" gorm:"column:order"` 記住這個坑，欄位名用到關鍵字排序會受影響
+        type: string
+      order:
+        type: integer
+      redirectUrl:
+        type: string
+      updateUser:
+        type: string
+      url:
+        type: string
+    type: object
+  model.Category:
+    properties:
+      categoryId:
+        type: string
+      desc:
+        type: string
+      isDeleted:
+        type: boolean
+      name:
+        type: string
+      order:
+        type: integer
+      parentId:
+        type: string
+    type: object
+  model.CategoryResult:
+    properties:
+      c1CategoryId:
+        type: string
+      c1Desc:
+        type: string
+      c1Name:
+        type: string
+      c1Order:
+        type: integer
+      c1ParentId:
+        type: string
+      c2CategoryId:
+        type: string
+      c2Name:
+        type: string
+      c2Order:
+        type: integer
+      c2ParentId:
+        type: string
+      c3CategoryId:
+        type: string
+      c3Name:
+        type: string
+      c3Order:
+        type: integer
+      c3ParentId:
+        type: string
+      id:
+        type: string
+      isDeleted:
+        type: boolean
+      key:
+        type: string
+    type: object
+  model.Order:
+    properties:
+      createAt:
+        type: string
+      extraInfo:
+        type: string
+      isDeleted:
+        type: boolean
+      mobile:
+        type: string
+      nickName:
+        type: string
+      orderDetail:
+        $ref: '#/definitions/model.OrderDetailItems'
+      orderId:
+        type: string
+      orderStatus:
+        type: integer
+      payStatus:
+        type: integer
+      payTime:
+        type: string
+      payType:
+        type: integer
+      totalPrice:
+        description: gorm:"column:order_detail"
+        type: number
+      updateAt:
+        type: string
+      userAddress:
+        type: string
+      userId:
+        type: string
+    type: object
+  model.OrderDetailItems:
+    properties:
+      itemCount:
+        items:
+          type: integer
+        type: array
+      itemId:
+        description: id price
+        items:
+          type: string
+        type: array
+    type: object
+  model.Product:
+    properties:
+      categoryId:
+        type: string
+      categoryName:
+        type: string
+      createUser:
+        type: string
+      isDeleted:
+        type: boolean
+      originalPrice:
+        type: number
+      productBanner:
+        type: string
+      productCoverImg:
+        type: string
+      productDetailContent:
+        type: string
+      productId:
+        type: string
+      productIntro:
+        type: string
+      productName:
+        type: string
+      sellStatus:
+        type: integer
+      sellingPrice:
+        type: number
+      stockNum:
+        type: integer
+      tag:
+        type: string
+      updateUser:
+        type: string
+    type: object
+  model.User:
+    properties:
+      address:
+        type: string
+      createTime:
+        type: string
+      isDeleted:
+        type: boolean
+      isLocked:
+        type: boolean
+      mobile:
+        type: string
+      nickName:
+        type: string
+      password:
+        type: string
+      updateTime:
+        type: string
+      userId:
+        type: string
+    required:
+    - mobile
+    type: object
+info:
+  contact: {}
+  description: golang作品
+  termsOfService: github
+  title: Gin-Backend
+  version: "1.0"
+paths:
+  /api/banner/add:
+    post:
+      parameters:
+      - description: Add Banner model
+        in: body
+        name: b
+        required: true
+        schema:
+          $ref: '#/definitions/model.Banner'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Banner Add
+      tags:
+      - Banner
+  /api/banner/delete:
+    post:
+      parameters:
+      - description: Delete by id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Banner Add
+      tags:
+      - Banner
+  /api/banner/edit:
+    post:
+      parameters:
+      - description: Edit Banner model
+        in: body
+        name: b
+        required: true
+        schema:
+          $ref: '#/definitions/model.Banner'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Banner Edit
+      tags:
+      - Banner
+  /api/banner/info:
+    get:
+      parameters:
+      - description: Info Query id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Banner Add
+      tags:
+      - Banner
+  /api/banner/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Banner List
+      tags:
+      - Banner
+  /api/category/add:
+    post:
+      parameters:
+      - description: Add
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/model.CategoryResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Category AddCategory
+      tags:
+      - Category
+  /api/category/delete:
+    post:
+      parameters:
+      - description: Delete Category
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Category DeleteCategory
+      tags:
+      - Category
+  /api/category/edit:
+    post:
+      parameters:
+      - description: Edit Category
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/model.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Category EditCategory
+      tags:
+      - Category
+  /api/category/info:
+    get:
+      parameters:
+      - description: Info Query id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Category CategoryInfo
+      tags:
+      - Category
+  /api/category/list4backend:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Category CategoryListForBackend
+      tags:
+      - Category
+  /api/order/add:
+    post:
+      parameters:
+      - description: Add Order
+        in: body
+        name: o
+        required: true
+        schema:
+          $ref: '#/definitions/model.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order OrderInfo
+      tags:
+      - Order
+  /api/order/delete:
+    post:
+      parameters:
+      - description: Delete Order
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order EditOrder
+      tags:
+      - Order
+  /api/order/edit:
+    post:
+      parameters:
+      - description: Edit Order
+        in: body
+        name: o
+        required: true
+        schema:
+          $ref: '#/definitions/model.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order EditOrder
+      tags:
+      - Order
+  /api/order/info:
+    get:
+      parameters:
+      - description: Order Info
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order OrderInfo
+      tags:
+      - Order
+  /api/order/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order OrderInfo
+      tags:
+      - Order
+  /api/product/add:
+    post:
+      parameters:
+      - description: Add Product
+        in: body
+        name: p
+        required: true
+        schema:
+          $ref: '#/definitions/model.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order AddProduct
+      tags:
+      - Product
+  /api/product/delete:
+    post:
+      parameters:
+      - description: Delete Product
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order DeleteProduct
+      tags:
+      - Product
+  /api/product/edit:
+    post:
+      parameters:
+      - description: Edit Product
+        in: body
+        name: p
+        required: true
+        schema:
+          $ref: '#/definitions/model.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order EditProduct
+      tags:
+      - Product
+  /api/product/info:
+    get:
+      parameters:
+      - description: Product Info
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order ProductInfo
+      tags:
+      - Product
+  /api/product/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order ProductList
+      tags:
+      - Product
+  /api/user/add:
+    post:
+      parameters:
+      - description: Add User
+        in: body
+        name: u
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order AddUser
+      tags:
+      - User
+  /api/user/delete:
+    post:
+      parameters:
+      - description: ' DeleteUser'
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order DeleteUser
+      tags:
+      - User
+  /api/user/edit:
+    post:
+      parameters:
+      - description: Edit User
+        in: body
+        name: u
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order EditUser
+      tags:
+      - User
+  /api/user/info:
+    get:
+      parameters:
+      - description: User Info
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order UserInfo
+      tags:
+      - User
+  /api/user/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 請求錯誤
+          schema:
+            type: string
+        "500":
+          description: 內部錯誤
+          schema:
+            type: string
+      summary: Order UserList
+      tags:
+      - User
+swagger: "2.0"

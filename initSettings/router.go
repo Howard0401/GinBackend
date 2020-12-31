@@ -1,11 +1,14 @@
 package initSettings
 
 import (
+	_ "VueGin/docs"
 	"VueGin/global"
 	"VueGin/middleware"
 	"VueGin/router"
 
 	"github.com/gin-gonic/gin"
+	swagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 //注意回傳型別
@@ -20,9 +23,13 @@ func Routers(r *gin.Engine) *gin.Engine {
 		r.Use(middleware.GinLogger())
 		r.Use(middleware.GinRecovery(true))
 	}
-	r.Use(middleware.ContextTimeout(global.Global_Config.System.Timeout))
-	r.Use(middleware.RateLimiter(Limiter))
 	r.Use(middleware.Cors()) //register Cors middleware
+	// }global.Global_Config.System.Timeout
+	// r.Use(middleware.ContextTimeout(1 * time.Nanosecond))//先不用這個
+	r.Use(middleware.RateLimiter(Limiter))
+	r.Use(middleware.Tracing())
+
+	r.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler))
 
 	PublicGroup := r.Group("")
 	{

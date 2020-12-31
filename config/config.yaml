@@ -1,8 +1,9 @@
 system: 
+  name: gin-server
   first_db: mysql
   mode: debug
   port: :9090
-  url: http://127.0.0.1:9090
+  url: 127.0.0.1:9090
   max_check_count: 10
   timeout: 1
 

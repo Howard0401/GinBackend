@@ -17,8 +17,15 @@ type CategoryHandler struct {
 	CategorySrv service.CategorySrv
 }
 
-//給後臺，可以直接編輯第三級分類 (Service層使用原生SQL)
+// @Summary Category CategoryListForBackend
+// @Tags Category
+// @Produce  json
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/category/list4backend [get]
 func (h *CategoryHandler) CategoryListForBackend(c *gin.Context) {
+	//給後臺，可以直接編輯第三級分類 (Service層使用原生SQL)
 	var q query.ListQuery
 	entity := res.Entity{
 		Code:      int(enum.ResFail),
@@ -117,7 +124,7 @@ func (h *CategoryHandler) GetEntity(result []*model.CategoryResult) map[string]*
 	return c1
 }
 
-//給前端
+//給前端 TODO
 func (h *CategoryHandler) CategoryList(c *gin.Context) {
 	var q query.ListQuery
 	entity := res.Entity{
@@ -170,6 +177,14 @@ func (h *CategoryHandler) CategoryList(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Category CategoryInfo
+// @Tags Category
+// @Produce  json
+// @Param id query string true "Info Query id"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/category/info [get]
 func (h *CategoryHandler) CategoryInfo(c *gin.Context) {
 	entity := res.Entity{
 		Code:      int(enum.ResFail),
@@ -206,8 +221,16 @@ func (h *CategoryHandler) CategoryInfo(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
-//增加子分類(model.CategoryResult{})
+// @Summary Category AddCategory
+// @Tags Category
+// @Produce  json
+// @Param category body model.CategoryResult true "Add"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/category/add [post]
 func (h *CategoryHandler) AddCategory(c *gin.Context) {
+	//增加子分類(model.CategoryResult{})
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
 		Msg:   enum.ResFail.String(),
@@ -243,8 +266,16 @@ func (h *CategoryHandler) AddCategory(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
-//編輯分類
+// @Summary Category EditCategory
+// @Tags Category
+// @Produce  json
+// @Param category body model.Category true "Edit Category"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/category/edit [post]
 func (h *CategoryHandler) EditCategory(c *gin.Context) {
+	//編輯分類
 	category := model.Category{}
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
@@ -254,7 +285,7 @@ func (h *CategoryHandler) EditCategory(c *gin.Context) {
 	}
 
 	err := c.ShouldBindJSON(&category)
-	fmt.Println(category)
+	// fmt.Println(category)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
 		format.EntityLog(entity)
@@ -275,6 +306,14 @@ func (h *CategoryHandler) EditCategory(c *gin.Context) {
 	}
 }
 
+// @Summary Category DeleteCategory
+// @Tags Category
+// @Produce  json
+// @Param id query string true "Delete Category"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/category/delete [post]
 func (h *CategoryHandler) DeleteCategory(c *gin.Context) {
 	id := c.Param("id")
 	chkExistModel := h.CategorySrv.ExistByCategoryId(id)

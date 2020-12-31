@@ -29,6 +29,14 @@ func (h *BannerHandler) GetEntity(in model.Banner) res.Banner {
 	}
 }
 
+// @Summary Banner Add
+// @Tags Banner
+// @Produce  json
+// @Param id query string true "Info Query id"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/banner/info [get]
 func (h *BannerHandler) BannerInfo(c *gin.Context) {
 	// bid := c.Param("id") //這個是/info/:id的路由 (api/banner/info/inputBanner1)
 	bid := c.Query("id") // (api/banner/info?id=inputBanner1)
@@ -69,7 +77,15 @@ func (h *BannerHandler) BannerInfo(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Banner List
+// @Tags Banner
+// @Produce  json
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/banner/list [get]
 func (h *BannerHandler) BannerList(c *gin.Context) {
+
 	var q query.ListQuery
 	entity := res.Entity{
 		Code:      int(enum.ResFail),
@@ -137,6 +153,14 @@ func (h *BannerHandler) BannerList(c *gin.Context) {
 
 }
 
+// @Summary Banner Add
+// @Tags Banner
+// @Produce  json
+// @Param b body model.Banner true "Add Banner model"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/banner/add [post]
 func (h *BannerHandler) AddBanner(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
@@ -167,6 +191,14 @@ func (h *BannerHandler) AddBanner(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Banner Edit
+// @Tags Banner
+// @Produce  json
+// @Param b body model.Banner true "Edit Banner model"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/banner/edit [post]
 func (h *BannerHandler) EditBanner(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
@@ -199,6 +231,14 @@ func (h *BannerHandler) EditBanner(c *gin.Context) {
 	}
 }
 
+// @Summary Banner Add
+// @Tags Banner
+// @Produce  json
+// @Param id query string true "Delete by id"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/banner/delete [post]
 func (h *BannerHandler) DeleteBanner(c *gin.Context) {
 	// id := c.Param("id")
 	id := c.Query("id")

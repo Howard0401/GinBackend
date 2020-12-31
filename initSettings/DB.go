@@ -56,5 +56,6 @@ func GormMySQL() (*gorm.DB, error) {
 		return DB, err
 	}
 	fmt.Printf("已讀取mysql資料庫:%v\n", DB)
+
 	return DB, nil
 }

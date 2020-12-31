@@ -98,7 +98,7 @@ func TestGetBannerInfo(t *testing.T) {
 	}
 	//將進入的id加入URL中
 	query := req.URL.Query()
-	query.Add("id", "inputBanner1")
+	query.Add("id", "inputBanner6")
 	req.URL.RawQuery = query.Encode()
 
 	newRecorder := httptest.NewRecorder()

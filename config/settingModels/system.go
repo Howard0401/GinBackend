@@ -3,6 +3,7 @@ package settings
 import "time"
 
 type System struct {
+	Name          string        `mapstructue:"name" yaml:"name"`
 	FirstDB       string        `mapstructure:"first_db" yaml:"first_db"`
 	Mode          string        `mapstructure:"mode" yaml:"mode"`
 	Port          string        `mapstructure:"port" yaml:"port"`

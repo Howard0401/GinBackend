@@ -35,6 +35,14 @@ func (h *OrderHandler) GetEntity(in model.Order) res.Order {
 	}
 }
 
+// @Summary Order OrderInfo
+// @Tags Order
+// @Produce  json
+// @Param id query string true "Order Info"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/order/info [get]
 func (h *OrderHandler) OrderInfo(c *gin.Context) {
 	entity := res.Entity{
 		Code:      int(enum.ResFail),
@@ -77,6 +85,13 @@ func (h *OrderHandler) OrderInfo(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order OrderInfo
+// @Tags Order
+// @Produce  json
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/order/list [get]
 func (h *OrderHandler) OrderList(c *gin.Context) {
 	var q query.ListQuery
 	entity := res.Entity{
@@ -137,6 +152,14 @@ func (h *OrderHandler) OrderList(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order OrderInfo
+// @Tags Order
+// @Produce  json
+// @Param o body model.Order true "Add Order"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/order/add [post]
 func (h *OrderHandler) AddOrder(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
@@ -173,6 +196,14 @@ func (h *OrderHandler) AddOrder(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order EditOrder
+// @Tags Order
+// @Produce  json
+// @Param o body model.Order true "Edit Order"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/order/edit [post]
 func (h *OrderHandler) EditOrder(c *gin.Context) {
 	o := model.Order{}
 	entity := res.Entity{
@@ -203,6 +234,14 @@ func (h *OrderHandler) EditOrder(c *gin.Context) {
 	}
 }
 
+// @Summary Order EditOrder
+// @Tags Order
+// @Produce  json
+// @Param id query string true "Delete Order"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/order/delete [post]
 func (h *OrderHandler) DeleteOrder(c *gin.Context) {
 	entity := res.Entity{
 		Code:      int(enum.ResFail),

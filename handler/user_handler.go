@@ -31,6 +31,14 @@ func (h *UserHandler) GetEntity(in model.User) res.User {
 	}
 }
 
+// @Summary Order UserInfo
+// @Tags User
+// @Produce  json
+// @Param id query string true "User Info"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/user/info [get]
 func (h *UserHandler) UserInfo(c *gin.Context) {
 	//create format of return value  先建立好輸出的實體格式
 	entity := res.Entity{
@@ -69,6 +77,13 @@ func (h *UserHandler) UserInfo(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order UserList
+// @Tags User
+// @Produce  json
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/user/list [get]
 func (h *UserHandler) UserList(c *gin.Context) {
 	var q query.ListQuery
 	entity := res.Entity{
@@ -125,6 +140,14 @@ func (h *UserHandler) UserList(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order AddUser
+// @Tags User
+// @Produce  json
+// @Param u body model.User true "Add User"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/user/add [post]
 func (h *UserHandler) AddUser(c *gin.Context) {
 	//建立Entity
 	entity := res.Entity{
@@ -165,6 +188,14 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order EditUser
+// @Tags User
+// @Produce  json
+// @Param u body model.User true "Edit User"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/user/edit [post]
 func (h *UserHandler) EditUser(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
@@ -193,6 +224,14 @@ func (h *UserHandler) EditUser(c *gin.Context) {
 	}
 }
 
+// @Summary Order DeleteUser
+// @Tags User
+// @Produce  json
+// @Param id query string true " DeleteUser"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/user/delete [post]
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),

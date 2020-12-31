@@ -38,6 +38,14 @@ func (h *ProductHandler) GetEntity(in model.Product) res.Product {
 	}
 }
 
+// @Summary Order ProductInfo
+// @Tags Product
+// @Produce  json
+// @Param id query string true "Product Info"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/product/info [get]
 func (h *ProductHandler) ProductInfo(c *gin.Context) {
 	entity := res.Entity{
 		Code:      int(enum.ResFail),
@@ -75,6 +83,13 @@ func (h *ProductHandler) ProductInfo(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order ProductList
+// @Tags Product
+// @Produce  json
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/product/list [get]
 func (h *ProductHandler) ProductList(c *gin.Context) {
 	var q query.ListQuery
 	entity := res.Entity{
@@ -140,6 +155,14 @@ func (h *ProductHandler) ProductList(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order AddProduct
+// @Tags Product
+// @Produce  json
+// @Param p body model.Product true "Add Product"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/product/add [post]
 func (h *ProductHandler) AddProduct(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
@@ -170,6 +193,14 @@ func (h *ProductHandler) AddProduct(c *gin.Context) {
 	format.EntityLog(entity)
 }
 
+// @Summary Order EditProduct
+// @Tags Product
+// @Produce  json
+// @Param p body model.Product true "Edit Product"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/product/edit [post]
 func (h *ProductHandler) EditProduct(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
@@ -198,6 +229,14 @@ func (h *ProductHandler) EditProduct(c *gin.Context) {
 	}
 }
 
+// @Summary Order DeleteProduct
+// @Tags Product
+// @Produce  json
+// @Param id query string true "Delete Product"
+// @Success 200 {string} string "成功"
+// @Failure 400 {string} string "請求錯誤"
+// @Failure 500 {string} string "內部錯誤"
+// @Router /api/product/delete [post]
 func (h *ProductHandler) DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
 	success, err := h.ProductSrv.Delete(id)
