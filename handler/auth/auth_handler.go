@@ -1,4 +1,4 @@
-package handler
+package authhandler
 
 import (
 	"VueGin/global"

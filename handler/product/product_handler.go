@@ -1,4 +1,4 @@
-package handler
+package producthandler
 
 import (
 	format "VueGin/Utils/logFormat"
@@ -13,37 +13,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type OrderHandler struct {
-	OrderSrv service.OrderSrv
+type ProductHandler struct {
+	ProductSrv service.ProductSrv
 }
 
-func (h *OrderHandler) GetEntity(in model.Order) res.Order {
-	return res.Order{
-		Key:         in.OrderId,
-		Id:          in.OrderId,
-		OrderId:     in.OrderId,
-		NickName:    in.NickName,
-		Mobile:      in.Mobile,
-		TotalPrice:  in.TotalPrice,
-		PayStatus:   in.PayStatus,
-		PayType:     in.PayType,
-		PayTime:     in.PayTime,
-		OrderStatus: in.OrderStatus,
-		ExtraInfo:   in.ExtraInfo,
-		UserAddress: in.UserAddress,
-		IsDeleted:   in.IsDeleted,
+func (h *ProductHandler) GetEntity(in model.Product) res.Product {
+	return res.Product{
+		Id:                   in.ProductId,
+		Key:                  in.ProductId,
+		ProductId:            in.ProductId,
+		ProductName:          in.ProductName,
+		ProductIntro:         in.ProductIntro,
+		CategoryId:           in.CategoryId,
+		CategoryName:         in.CategoryName,
+		ProductCoverImg:      in.ProductCoverImg,
+		ProductBanner:        in.ProductBanner,
+		OriginalPrice:        in.OriginalPrice,
+		SellingPrice:         in.SellingPrice,
+		StockNum:             in.StockNum,
+		Tag:                  in.Tag,
+		SellStatus:           in.SellStatus,
+		ProductDetailContent: in.ProductDetailContent,
+		IsDeleted:            in.IsDeleted,
 	}
 }
 
-// @Summary Order OrderInfo
-// @Tags Order
+// @Summary Order ProductInfo
+// @Tags Product
 // @Produce  json
-// @Param id query string true "Order Info"
+// @Param id query string true "Product Info"
 // @Success 200 {string} string "成功"
 // @Failure 400 {string} string "請求錯誤"
 // @Failure 500 {string} string "內部錯誤"
-// @Router /api/order/info [get]
-func (h *OrderHandler) OrderInfo(c *gin.Context) {
+// @Router /api/product/info [get]
+func (h *ProductHandler) ProductInfo(c *gin.Context) {
 	entity := res.Entity{
 		Code:      int(enum.ResFail),
 		Msg:       enum.ResFail.String(),
@@ -51,69 +54,68 @@ func (h *OrderHandler) OrderInfo(c *gin.Context) {
 		TotalPage: 1,
 		Data:      nil,
 	}
-	//Read id from context
-	oid := c.Param("id")
-	if oid == "" {
+	pid := c.Param("id")
+	if pid == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
 		format.EntityLog(entity)
 		return
 	}
-
-	o := model.Order{
-		OrderId: oid,
+	input := model.Product{
+		ProductId: pid,
 	}
-	// fmt.Println(o)
-	//從商業邏輯層套用Get方法，以ID查找符合之結果
-	result, err := h.OrderSrv.Get(o)
-
+	result, err := h.ProductSrv.Get(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
 		format.EntityLog(entity)
 		return
 	}
 
-	unpack := h.GetEntity(*result)
+	data := h.GetEntity(*result)
 
 	entity = res.Entity{
 		Code:      http.StatusOK,
 		Msg:       "OK",
 		Total:     0,
 		TotalPage: 0,
-		Data:      unpack,
+		Data:      data,
 	}
-	c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+	c.JSON(http.StatusOK, gin.H{"entity": entity})
 	format.EntityLog(entity)
 }
 
-// @Summary Order OrderInfo
-// @Tags Order
+// @Summary Order ProductList
+// @Tags Product
 // @Produce  json
 // @Success 200 {string} string "成功"
 // @Failure 400 {string} string "請求錯誤"
 // @Failure 500 {string} string "內部錯誤"
-// @Router /api/order/list [get]
-func (h *OrderHandler) OrderList(c *gin.Context) {
+// @Router /api/product/list [get]
+func (h *ProductHandler) ProductList(c *gin.Context) {
 	var q query.ListQuery
 	entity := res.Entity{
-		Code:      int(enum.ResFail),
+		Code:      int(enum.ResOK),
 		Msg:       enum.ResFail.String(),
 		Total:     0,
 		TotalPage: 1,
 		Data:      nil,
 	}
+	//因為要查詢的型別是 *query.ListQuery
+	//context傳來的JSON綁定q
 	err := c.ShouldBindQuery(&q)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
 		format.EntityLog(entity)
 		return
 	}
-	list, err := h.OrderSrv.List(&q)
+	//確定分頁數量
+	list, err := h.ProductSrv.List(&q)
 	if err != nil {
 		entity.Msg = fmt.Sprintf("List Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
+		format.EntityLog(entity)
 		return
 	}
-	total, err := h.OrderSrv.GetTotal(&q)
+	total, err := h.ProductSrv.GetTotal(&q)
 	if err != nil {
 		entity.Msg = fmt.Sprintf("GetTotal Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"entity": entity})
@@ -125,20 +127,21 @@ func (h *OrderHandler) OrderList(c *gin.Context) {
 		q.PageSize = 5
 	}
 
-	retNum := int(int(total) / q.PageSize)
-	ret := int(int(total) % q.PageSize)
+	retNum := int(int(total) % q.PageSize)
+	ret := int(int(total) / q.PageSize)
+
 	pages := 0
-	if ret == 0 {
-		pages = retNum
+
+	if retNum == 0 {
+		pages = ret
 	} else {
-		pages = retNum + 1
+		pages = ret + 1
 	}
 
-	var output []*res.Order
-
-	for _, n := range list {
-		tmp := h.GetEntity(*n)
-		output = append(output, &tmp)
+	var outputList []*res.Product
+	for _, item := range list {
+		r := h.GetEntity(*item)
+		outputList = append(outputList, &r)
 	}
 
 	entity = res.Entity{
@@ -146,129 +149,112 @@ func (h *OrderHandler) OrderList(c *gin.Context) {
 		Msg:       "OK",
 		Total:     int(total),
 		TotalPage: pages,
-		Data:      output,
+		Data:      outputList,
 	}
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
 	format.EntityLog(entity)
 }
 
-// @Summary Order OrderInfo
-// @Tags Order
+// @Summary Order AddProduct
+// @Tags Product
 // @Produce  json
-// @Param o body model.Order true "Add Order"
+// @Param p body model.Product true "Add Product"
 // @Success 200 {string} string "成功"
 // @Failure 400 {string} string "請求錯誤"
 // @Failure 500 {string} string "內部錯誤"
-// @Router /api/order/add [post]
-func (h *OrderHandler) AddOrder(c *gin.Context) {
+// @Router /api/product/add [post]
+func (h *ProductHandler) AddProduct(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
 		Msg:   enum.ResFail.String(),
 		Total: 0,
 		Data:  nil,
 	}
-	//加入新的order
-	o := model.Order{}
-	//綁定JSON，修改結構體中的o屬性
-	err := c.ShouldBindJSON(&o)
+	p := model.Product{}
+	err := c.ShouldBindJSON(&p)
+	// fmt.Println(p)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
 		format.EntityLog(entity)
 		return
 	}
-	result, err := h.OrderSrv.Add(o)
 
+	result, err := h.ProductSrv.Add(p)
 	if err != nil {
 		entity.Msg = err.Error()
-		format.EntityLog(entity)
-		return
-	}
-
-	if result.OrderId == "" {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
 		format.EntityLog(entity)
 		return
 	}
-
 	entity.Code = int(enum.ResOK)
-	entity.Msg = enum.ResOK.String()
+	entity.Msg = "OK,已添加Data"
+	entity.Data = result
 	c.JSON(http.StatusOK, gin.H{"entity": entity})
 	format.EntityLog(entity)
 }
 
-// @Summary Order EditOrder
-// @Tags Order
+// @Summary Order EditProduct
+// @Tags Product
 // @Produce  json
-// @Param o body model.Order true "Edit Order"
+// @Param p body model.Product true "Edit Product"
 // @Success 200 {string} string "成功"
 // @Failure 400 {string} string "請求錯誤"
 // @Failure 500 {string} string "內部錯誤"
-// @Router /api/order/edit [post]
-func (h *OrderHandler) EditOrder(c *gin.Context) {
-	o := model.Order{}
+// @Router /api/product/edit [post]
+func (h *ProductHandler) EditProduct(c *gin.Context) {
 	entity := res.Entity{
 		Code:  int(enum.ResFail),
 		Msg:   enum.ResFail.String(),
 		Total: 0,
 		Data:  nil,
 	}
-	err := c.ShouldBindJSON(&o)
-
-	if err != nil || o.OrderId == "" {
-		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		format.EntityLog(entity)
-		return
-	}
-
-	success, err := h.OrderSrv.Edit(o)
+	var p model.Product
+	err := c.ShouldBindJSON(&p)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
 		format.EntityLog(entity)
 		return
 	}
+
+	success, err := h.ProductSrv.Edit(p)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"entity": entity})
+		format.EntityLog(entity)
+	}
 	if success {
 		entity.Code = int(enum.ResOK)
-		entity.Msg = fmt.Sprintf("編輯成功 %v", o)
+		entity.Msg = enum.ResOK.String()
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
 		format.EntityLog(entity)
 	}
 }
 
-// @Summary Order EditOrder
-// @Tags Order
+// @Summary Order DeleteProduct
+// @Tags Product
 // @Produce  json
-// @Param id query string true "Delete Order"
+// @Param id query string true "Delete Product"
 // @Success 200 {string} string "成功"
 // @Failure 400 {string} string "請求錯誤"
 // @Failure 500 {string} string "內部錯誤"
-// @Router /api/order/delete [post]
-func (h *OrderHandler) DeleteOrder(c *gin.Context) {
-	entity := res.Entity{
-		Code:      int(enum.ResFail),
-		Msg:       enum.ResFail.String(),
-		Total:     0,
-		TotalPage: 1,
-		Data:      nil,
-	}
+// @Router /api/product/delete [post]
+func (h *ProductHandler) DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
-	o := h.OrderSrv.ExistByOrderId(id)
-	//沒有返回o時
-	if o == nil {
-		c.JSON(http.StatusOK, gin.H{"entity": entity})
-		format.EntityLog(entity)
-		return
+	success, err := h.ProductSrv.Delete(id)
+	entity := res.Entity{
+		Code:  int(enum.ResFail),
+		Msg:   enum.ResFail.String(),
+		Total: 0,
+		Data:  nil,
 	}
-	success, err := h.OrderSrv.Delete(*o)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
 		format.EntityLog(entity)
-		return
 	}
 
 	if success {
 		entity.Code = int(enum.ResOK)
-		entity.Msg = fmt.Sprintf("刪除成功, id:%s", id)
+		entity.Msg = fmt.Sprintf("刪除成功，id:%s", id)
 		c.JSON(http.StatusOK, gin.H{"entity": entity})
 		format.EntityLog(entity)
 	}

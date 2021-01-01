@@ -51,7 +51,7 @@ func (repo *BannerRepository) Add(Banner model.Banner) (*model.Banner, error) {
 }
 
 func (repo *BannerRepository) Get(Banner model.Banner) (*model.Banner, error) {
-	err := repo.DB.Where("banner_id =  ?", Banner.BannerId).Find(&Banner).Error
+	err := repo.DB.Where("banner_id =  ?", Banner.BannerId).Find(&Banner).First(&Banner).Error
 	if err != nil {
 		return nil, fmt.Errorf("get failed:%v", err)
 	}
@@ -72,7 +72,7 @@ func (repo *BannerRepository) Edit(Banner model.Banner) (bool, error) {
 	if Banner.BannerId == "" {
 		return false, fmt.Errorf("please input id")
 	}
-	b := &model.Banner{}
+	b := repo.ExistByBannerID(Banner.BannerId)
 	err := repo.DB.Model(b).Where("banner_id = ? ", Banner.BannerId).Updates(map[string]interface{}{
 		"url":          Banner.Url,
 		"redirect_url": Banner.RedirectUrl,

@@ -2,20 +2,19 @@ package server
 
 import (
 	"VueGin/global"
-	"VueGin/handler"
 	router "VueGin/router"
 	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
-var (
-	BannerHandler   handler.BannerHandler
-	CategoryHandler handler.CategoryHandler
-	OrderHandler    handler.OrderHandler
-	ProductHandler  handler.ProductHandler
-	UserHandler     handler.UserHandler
-)
+// var (
+// 	BannerHandler   bannerhandler.BannerHandler
+// 	CategoryHandler handler.CategoryHandler
+// 	OrderHandler    handler.OrderHandler
+// 	ProductHandler  handler.ProductHandler
+// 	UserHandler     handler.UserHandler
+// )
 
 func RunServer() {
 	//ver1. 使用gin設定路由、啟動API

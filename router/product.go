@@ -1,8 +1,8 @@
-package product
+package router
 
 import (
 	"VueGin/global"
-	"VueGin/handler"
+	producthandler "VueGin/handler/product"
 	"VueGin/repository"
 	"VueGin/service"
 
@@ -10,7 +10,7 @@ import (
 )
 
 func InitProductRouter(r *gin.RouterGroup) {
-	methods := handler.ProductHandler{
+	methods := producthandler.ProductHandler{
 		ProductSrv: &service.ProductService{
 			Repo: &repository.ProductRepository{
 				DB: global.Global_DB,

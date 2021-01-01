@@ -1,8 +1,8 @@
-package order
+package router
 
 import (
 	"VueGin/global"
-	"VueGin/handler"
+	orderhandler "VueGin/handler/order"
 	"VueGin/repository"
 	"VueGin/service"
 
@@ -10,7 +10,7 @@ import (
 )
 
 func InitOrderRouter(r *gin.RouterGroup) {
-	methods := handler.OrderHandler{
+	methods := orderhandler.OrderHandler{
 		OrderSrv: &service.OrderService{
 			Repo: &repository.OrderRepository{
 				DB: global.Global_DB,

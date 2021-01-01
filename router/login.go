@@ -1,8 +1,8 @@
-package login
+package router
 
 import (
 	"VueGin/global"
-	"VueGin/handler"
+	authhandler "VueGin/handler/auth"
 	"VueGin/repository"
 	"VueGin/service"
 
@@ -10,7 +10,7 @@ import (
 )
 
 func InitLoginRouter(Router *gin.RouterGroup) {
-	methods := handler.AuthHandler{
+	methods := authhandler.AuthHandler{
 		AuthSrv: &service.AuthService{
 			Repo: &repository.AuthRepository{
 				DB: global.Global_DB,

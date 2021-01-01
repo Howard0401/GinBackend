@@ -4,12 +4,6 @@ import (
 	_ "VueGin/docs"
 	"VueGin/global"
 	"VueGin/middleware"
-	banner "VueGin/router/banner"
-	category "VueGin/router/category"
-	login "VueGin/router/login"
-	order "VueGin/router/order"
-	product "VueGin/router/product"
-	user "VueGin/router/user"
 
 	"github.com/gin-gonic/gin"
 	swagger "github.com/swaggo/gin-swagger"
@@ -38,17 +32,17 @@ func Routers(r *gin.Engine) *gin.Engine {
 
 	PublicGroup := r.Group("")
 	{
-		login.InitLoginRouter(PublicGroup)
+		InitLoginRouter(PublicGroup)
 	}
 	PrivateGroup := r.Group("/api")
 	// PrivateGroup.Use(middleware.JWT()) //登入後需驗證JWT token
 	PrivateGroup.Use()
 	{
-		banner.InitBannerRouter(PrivateGroup)
-		category.InitCategoryRouter(PrivateGroup)
-		order.InitOrderRouter(PrivateGroup)
-		product.InitProductRouter(PrivateGroup)
-		user.InitUserRouter(PrivateGroup)
+		InitBannerRouter(PrivateGroup)
+		InitCategoryRouter(PrivateGroup)
+		InitOrderRouter(PrivateGroup)
+		InitProductRouter(PrivateGroup)
+		InitUserRouter(PrivateGroup)
 	}
 	return r
 }

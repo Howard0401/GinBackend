@@ -1,19 +1,19 @@
-package banner
+package router
 
 import (
 	"VueGin/global"
-	"VueGin/handler"
+	bannerhandler "VueGin/handler/banner"
 	"VueGin/repository"
 	"VueGin/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-var methods handler.BannerHandler
+var methods bannerhandler.BannerHandler
 
 //這樣寫是為了Unit Test方便
 func GetMethods() {
-	methods = handler.BannerHandler{
+	methods = bannerhandler.BannerHandler{
 		BannerSrv: &service.BannerService{
 			Repo: &repository.BannerRepository{
 				DB: global.Global_DB,

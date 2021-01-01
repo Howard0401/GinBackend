@@ -1,8 +1,8 @@
-package category
+package router
 
 import (
 	"VueGin/global"
-	"VueGin/handler"
+	categoryhandler "VueGin/handler/category"
 	"VueGin/repository"
 	"VueGin/service"
 
@@ -11,7 +11,7 @@ import (
 
 func InitCategoryRouter(r *gin.RouterGroup) {
 
-	methods := handler.CategoryHandler{
+	methods := categoryhandler.CategoryHandler{
 		CategorySrv: &service.CategoryService{
 			Repo: &repository.CategoryRepository{
 				DB: global.Global_DB,

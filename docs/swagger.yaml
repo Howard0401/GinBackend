@@ -1,6 +1,8 @@
 definitions:
   model.Banner:
     properties:
+      banner_id:
+        type: string
       createUser:
         description: Order       int    `json:"order" gorm:"column:order"` 記住這個坑，欄位名用到關鍵字排序會受影響
         type: string
@@ -282,6 +284,17 @@ paths:
       - Banner
   /api/banner/list:
     get:
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: string
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: string
       produces:
       - application/json
       responses:

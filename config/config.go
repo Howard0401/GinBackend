@@ -41,6 +41,7 @@ func (c *Config) loadConfig() error {
 	if c.Name != "" {
 		c.Vp.SetConfigFile(c.Name)
 	} else {
+		c.Vp.AddConfigPath("../config")    //For router Unit Test
 		c.Vp.AddConfigPath("../../config") //For router Unit Test
 		c.Vp.AddConfigPath("config")
 		c.Vp.SetConfigName("config")

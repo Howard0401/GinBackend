@@ -198,6 +198,22 @@ var doc = `{
                     "Banner"
                 ],
                 "summary": "Banner List",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "size",
+                        "name": "size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "成功",
@@ -1005,6 +1021,9 @@ var doc = `{
         "model.Banner": {
             "type": "object",
             "properties": {
+                "banner_id": {
+                    "type": "string"
+                },
                 "createUser": {
                     "description": "Order       int    ` + "`" + `json:\"order\" gorm:\"column:order\"` + "`" + ` 記住這個坑，欄位名用到關鍵字排序會受影響",
                     "type": "string"
