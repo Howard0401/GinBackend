@@ -43,7 +43,7 @@ func GormMySQL() (*gorm.DB, error) {
 	config := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true&charset=utf8&parseTime=%t&loc=%s",
 		dbStr.User, dbStr.Password, dbStr.Host, dbStr.DBName, true, "Local",
 	)
-	fmt.Printf("%v\n", config)
+	// fmt.Printf("%v\n", config)
 	// gorm v1
 	//DB, err = gorm.Open("mysql", config)
 	//注意下方是gorm v2的版本

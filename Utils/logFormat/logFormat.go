@@ -2,7 +2,7 @@ package format
 
 import (
 	"VueGin/global"
-	res "VueGin/resViewModel"
+	res "VueGin/model/res_view_model"
 
 	"go.uber.org/zap"
 )

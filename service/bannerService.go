@@ -10,6 +10,7 @@ import (
 type BannerSrv interface {
 	Add(Banner model.Banner) (*model.Banner, error)
 	Get(Banner model.Banner) (*model.Banner, error)
+	GetByUrl(Banner model.Banner) (*model.Banner, error)
 	Edit(Banner model.Banner) (bool, error)
 	Delete(id string) (bool, error)
 
@@ -29,6 +30,10 @@ func (srv *BannerService) Add(Banner model.Banner) (*model.Banner, error) {
 
 func (srv *BannerService) Get(Banner model.Banner) (*model.Banner, error) {
 	return srv.Repo.Get(Banner)
+}
+
+func (srv *BannerService) GetByUrl(Banner model.Banner) (*model.Banner, error) {
+	return srv.Repo.GetByUrl(Banner)
 }
 
 func (srv *BannerService) Edit(Banner model.Banner) (bool, error) {

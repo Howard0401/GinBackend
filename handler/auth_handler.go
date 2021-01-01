@@ -3,7 +3,7 @@ package handler
 import (
 	"VueGin/global"
 	"VueGin/model"
-	request "VueGin/model/requestType"
+	request "VueGin/model/request_type"
 	"VueGin/service"
 	"net/http"
 

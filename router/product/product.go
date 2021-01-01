@@ -1,4 +1,4 @@
-package router
+package product
 
 import (
 	"VueGin/global"

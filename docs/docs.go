@@ -1005,9 +1005,6 @@ var doc = `{
         "model.Banner": {
             "type": "object",
             "properties": {
-                "bannerId": {
-                    "type": "string"
-                },
                 "createUser": {
                     "description": "Order       int    ` + "`" + `json:\"order\" gorm:\"column:order\"` + "`" + ` 記住這個坑，欄位名用到關鍵字排序會受影響",
                     "type": "string"

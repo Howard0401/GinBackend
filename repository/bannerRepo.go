@@ -24,6 +24,7 @@ type BannerRepoInterface interface {
 	List(req *query.ListQuery) (Banners []*model.Banner, err error)
 	ExistByBannerID(id string) *model.Banner
 	GetTotal(req *query.ListQuery) (total int64, err error) //總數
+	GetByUrl(Banner model.Banner) (*model.Banner, error)    //For Test
 }
 
 func (repo *BannerRepository) Exist(Banner model.Banner) *model.Banner {
@@ -36,9 +37,7 @@ func (repo *BannerRepository) Exist(Banner model.Banner) *model.Banner {
 }
 
 func (repo *BannerRepository) Add(Banner model.Banner) (*model.Banner, error) {
-	// if Banner.BannerId == "" {
-	// 	Banner.BannerId = uuid.NewV4().String()
-	// }
+	//以uuid存進資料庫
 	Banner.BannerId = uuid.NewV4().String()
 	exist := repo.Exist(Banner)
 	if exist != nil && exist.Url == Banner.Url && exist.RedirectUrl == Banner.RedirectUrl {
@@ -52,9 +51,16 @@ func (repo *BannerRepository) Add(Banner model.Banner) (*model.Banner, error) {
 }
 
 func (repo *BannerRepository) Get(Banner model.Banner) (*model.Banner, error) {
-	// 不用這樣寫 Find 已經包含 Where 語法
-	// err := repo.DB.Find(&Banner).Where("banner_id=?", Banner.BannerId).Error
 	err := repo.DB.Where("banner_id =  ?", Banner.BannerId).Find(&Banner).Error
+	if err != nil {
+		return nil, fmt.Errorf("get failed:%v", err)
+	}
+	// fmt.Println(&Banner)
+	return &Banner, nil
+}
+
+func (repo *BannerRepository) GetByUrl(Banner model.Banner) (*model.Banner, error) {
+	err := repo.DB.Where("url=  ?", Banner.Url).Find(&Banner).Error
 	if err != nil {
 		return nil, fmt.Errorf("get failed:%v", err)
 	}
@@ -79,9 +85,8 @@ func (repo *BannerRepository) Edit(Banner model.Banner) (bool, error) {
 }
 
 func (repo *BannerRepository) Delete(id string) (bool, error) {
-	// err := repo.DB.Where("banner_id=?", id).Delete(&model.Banner{}).Error
-	in := &model.Banner{BannerId: id}
-	err := repo.DB.Where("banner_id=?", id).Delete(in).Error
+	in := repo.ExistByBannerID(id)
+	err := repo.DB.Where("banner_id=?", id).Delete(&in).Error
 	if err != nil {
 		return false, err
 	}
@@ -90,10 +95,6 @@ func (repo *BannerRepository) Delete(id string) (bool, error) {
 
 func (repo *BannerRepository) GetTotal(req *query.ListQuery) (total int64, err error) {
 	var banners []model.Banner
-	// db := repo.DB
-	// if req.Where != "" {
-	// 	db = db.Where(req.Where)
-	// }
 	if err := repo.DB.Find(&banners).Count(&total).Error; err != nil {
 		return total, err
 	}
@@ -112,7 +113,7 @@ func (repo *BannerRepository) List(req *query.ListQuery) (banners []*model.Banne
 
 func (repo *BannerRepository) ExistByBannerID(id string) *model.Banner {
 	var b model.Banner
-	if err := repo.DB.Where("order_id=?", id).First(&b).Error; err != nil {
+	if err := repo.DB.Where("banner_id=?", id).First(&b).Error; err != nil {
 		return nil
 	}
 	return &b

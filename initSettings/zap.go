@@ -55,6 +55,8 @@ func getEncorder() zapcore.Encoder {
 	// encoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	// encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
 	// return zapcore.NewJSONEncoder(encoderConfig)
+
+	//少一個都不行，會報錯nil
 	cfg := zapcore.EncoderConfig{
 		MessageKey:     "message",
 		LevelKey:       "level",

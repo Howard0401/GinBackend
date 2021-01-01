@@ -1,4 +1,4 @@
-package router
+package banner
 
 import (
 	"VueGin/global"
@@ -9,13 +9,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitBannerRouter(r *gin.RouterGroup) {
-	methods := handler.BannerHandler{
+var methods handler.BannerHandler
+
+//這樣寫是為了Unit Test方便
+func GetMethods() {
+	methods = handler.BannerHandler{
 		BannerSrv: &service.BannerService{
 			Repo: &repository.BannerRepository{
 				DB: global.Global_DB,
 			},
 		}}
+}
+
+func InitBannerRouter(r *gin.RouterGroup) {
+	GetMethods()
 	banner := r.Group("/banner")
 	{
 		banner.GET("/list", methods.BannerList)

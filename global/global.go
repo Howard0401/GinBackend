@@ -15,10 +15,4 @@ var (
 	Global_Config *settings.ConfigSettings
 	Global_Logger *zap.Logger
 	Global_Tracer *opentracing.Tracer
-	// Global_JWT
-	// BannerHandler   handler.BannerHandler
-	// CategoryHandler handler.CategoryHandler
-	// OrderHandler    handler.OrderHandler
-	// ProductHandler  handler.ProductHandler
-	// UserHandler     handler.UserHandler
 )

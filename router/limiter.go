@@ -1,4 +1,4 @@
-package initSettings
+package router
 
 import (
 	"VueGin/Utils/limiter"

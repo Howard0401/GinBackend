@@ -3,7 +3,7 @@ package server
 import (
 	"VueGin/global"
 	"VueGin/handler"
-	"VueGin/initSettings"
+	router "VueGin/router"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +27,7 @@ func RunServer() {
 	// gin.SetMode(viper.GetString("system.mode"))
 	// port := global.Global_Viper.GetString("system.port")
 
-	initSettings.Routers(r)
+	router.Routers(r)
 
 	port := global.Global_Config.System.Port
 	err := r.Run(port)
