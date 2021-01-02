@@ -1,3 +1,4 @@
+--備忘錄 僅參考用，後續有將幾個欄位改成unique(如banner中的url 為了測試能找到golang自建的uuid，而且看板也很少同時存兩張一樣的圖)
 --創建DB
 -- CREATE DATABASE
 -- IF 
@@ -6,7 +7,7 @@
 
 -- 改變資料欄位的型別
 -- https://stackoverflow.com/questions/1356866/how-do-i-change-the-data-type-for-a-column-in-mysql
--- ALTER TABLE  category Modify parent_id varchar(100)
+-- ALTER TABLE  category Modify parent_id varchar(100)    // 這個是加入ADD UNIQUE (ID);
 
 --創建User表格
 -- CREATE TABLE `User`

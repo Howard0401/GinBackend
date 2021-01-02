@@ -65,7 +65,6 @@ func TestAddBanner(t *testing.T) {
 	req, err := http.NewRequest("POST", "/api/banner/add", bytes.NewBuffer(jsonStr))
 	if err != nil {
 		t.Fatal(err)
-		t.Errorf("")
 	}
 	newRecorder := httptest.NewRecorder()
 	r.ServeHTTP(newRecorder, req)

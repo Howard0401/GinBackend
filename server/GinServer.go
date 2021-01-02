@@ -8,14 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// var (
-// 	BannerHandler   bannerhandler.BannerHandler
-// 	CategoryHandler handler.CategoryHandler
-// 	OrderHandler    handler.OrderHandler
-// 	ProductHandler  handler.ProductHandler
-// 	UserHandler     handler.UserHandler
-// )
-
 func RunServer() {
 	//ver1. 使用gin設定路由、啟動API
 	r := gin.Default()
@@ -25,7 +17,6 @@ func RunServer() {
 	//這兩種都可以
 	// gin.SetMode(viper.GetString("system.mode"))
 	// port := global.Global_Viper.GetString("system.port")
-
 	router.Routers(r)
 
 	port := global.Global_Config.System.Port

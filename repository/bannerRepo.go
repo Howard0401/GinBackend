@@ -73,12 +73,12 @@ func (repo *BannerRepository) Edit(Banner model.Banner) (bool, error) {
 		return false, fmt.Errorf("please input id")
 	}
 	b := repo.ExistByBannerID(Banner.BannerId)
-	err := repo.DB.Model(b).Where("banner_id = ? ", Banner.BannerId).Updates(map[string]interface{}{
+	err := repo.DB.Model(&b).Where("banner_id = ? ", Banner.BannerId).First(&b).Updates(map[string]interface{}{
 		"url":          Banner.Url,
 		"redirect_url": Banner.RedirectUrl,
 		"order_by_idx": Banner.Order,
 	}).Error
-	if err != nil {
+	if err != nil || b == nil { // b==nil是沒找到
 		return false, err
 	}
 	return true, err

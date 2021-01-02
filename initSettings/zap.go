@@ -70,7 +70,8 @@ func getEncorder() zapcore.Encoder {
 		EncodeDuration: zapcore.SecondsDurationEncoder,
 		EncodeCaller:   zapcore.FullCallerEncoder,
 	}
-	return zapcore.NewJSONEncoder(cfg)
+	// return zapcore.NewJSONEncoder(cfg)//Json格式
+	return zapcore.NewConsoleEncoder(cfg)
 }
 
 func CustomTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
