@@ -2,7 +2,7 @@ package router
 
 import (
 	"VueGin/global"
-	"VueGin/handler"
+	userhandler "VueGin/handler/user"
 	"VueGin/repository"
 	"VueGin/service"
 
@@ -10,7 +10,7 @@ import (
 )
 
 func InitUserRouter(r *gin.RouterGroup) {
-	methods := handler.UserHandler{
+	methods := userhandler.UserHandler{
 		UserSrv: &service.UserService{
 			Repo: &repository.UserRepository{
 				DB: global.Global_DB,
